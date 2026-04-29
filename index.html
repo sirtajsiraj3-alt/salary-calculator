@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Future Salary Predictor</title>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 20px; }
+    input, select { padding: 10px; margin: 5px; }
+    button { padding: 10px 20px; }
+  </style>
+</head>
+
+<body>
+
+<h2>💰 Future Salary & Rich Life Predictor</h2>
+
+<input type="number" id="salary" placeholder="Current Salary"><br>
+<input type="number" id="age" placeholder="Your Age"><br>
+
+<select id="skill">
+  <option value="1.05">Low Skill</option>
+  <option value="1.1">Medium Skill</option>
+  <option value="1.2">High Skill</option>
+</select><br>
+
+<button onclick="calculate()">Predict</button>
+
+<h3 id="result"></h3>
+
+<script>
+function calculate() {
+  let salary = document.getElementById("salary").value;
+  let age = document.getElementById("age").value;
+  let growth = document.getElementById("skill").value;
+
+  let future5 = salary * Math.pow(growth, 5);
+  let future10 = salary * Math.pow(growth, 10);
+
+  let millionaireAge = age;
+  let tempSalary = salary;
+
+  while (tempSalary < 1000000) {
+    tempSalary *= growth;
+    millionaireAge++;
+  }
+
+  document.getElementById("result").innerHTML =
+    "💸 5 Years Salary: $" + Math.round(future5) +
+    "<br>🚀 10 Years Salary: $" + Math.round(future10) +
+    "<br>🤑 Millionaire Age: " + millionaireAge;
+}
+</script>
+
+</body>
+</html>
