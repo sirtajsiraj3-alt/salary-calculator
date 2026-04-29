@@ -1,52 +1,162 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Future Salary Predictor</title>
+  <title>Future Salary AI Predictor</title>
+
   <style>
-    body { font-family: Arial; text-align: center; padding: 20px; }
-    input, select { padding: 10px; margin: 5px; }
-    button { padding: 10px 20px; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .app {
+      background: white;
+      padding: 25px;
+      border-radius: 18px;
+      width: 320px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 8px;
+      background: #667eea;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #5a67d8;
+      transform: scale(1.02);
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 10px;
+      background: #f4f4f4;
+      border-radius: 10px;
+      font-size: 14px;
+    }
+
+    .small-btns {
+      display: flex;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .small-btns button {
+      flex: 1;
+      font-size: 12px;
+      padding: 8px;
+    }
   </style>
 </head>
 
 <body>
 
-<h2>💰 Future Salary & Rich Life Predictor</h2>
+<div class="app">
 
-<input type="number" id="salary" placeholder="Current Salary"><br>
-<input type="number" id="age" placeholder="Your Age"><br>
+  <h2>💰 Future Salary AI</h2>
 
-<select id="skill">
-  <option value="1.05">Low Skill</option>
-  <option value="1.1">Medium Skill</option>
-  <option value="1.2">High Skill</option>
-</select><br>
+  <input type="number" id="salary" placeholder="Current Salary">
+  <input type="number" id="age" placeholder="Your Age">
 
-<button onclick="calculate()">Predict</button>
+  <select id="skill">
+    <option value="1.05">Low Skill</option>
+    <option value="1.1">Medium Skill</option>
+    <option value="1.2">High Skill</option>
+  </select>
 
-<h3 id="result"></h3>
+  <select id="currency">
+    <option value="$">USD ($)</option>
+    <option value="₨">PKR (₨)</option>
+    <option value="₹">INR (₹)</option>
+    <option value="€">EUR (€)</option>
+    <option value="£">GBP (£)</option>
+  </select>
+
+  <button onclick="calculate()">Predict Future 💡</button>
+
+  <div class="result" id="result">Your result will appear here...</div>
+
+  <div class="small-btns">
+    <button onclick="copyResult()">📋 Copy</button>
+    <button onclick="shareResult()">📲 Share</button>
+  </div>
+
+</div>
 
 <script>
+let lastResult = "";
+
 function calculate() {
-  let salary = document.getElementById("salary").value;
-  let age = document.getElementById("age").value;
-  let growth = document.getElementById("skill").value;
+  let salary = Number(document.getElementById("salary").value);
+  let age = Number(document.getElementById("age").value);
+  let growth = Number(document.getElementById("skill").value);
+  let currency = document.getElementById("currency").value;
 
   let future5 = salary * Math.pow(growth, 5);
   let future10 = salary * Math.pow(growth, 10);
 
   let millionaireAge = age;
-  let tempSalary = salary;
+  let temp = salary;
 
-  while (tempSalary < 1000000) {
-    tempSalary *= growth;
+  while (temp < 1000000) {
+    temp *= growth;
     millionaireAge++;
   }
 
-  document.getElementById("result").innerHTML =
-    "💸 5 Years Salary: $" + Math.round(future5) +
-    "<br>🚀 10 Years Salary: $" + Math.round(future10) +
-    "<br>🤑 Millionaire Age: " + millionaireAge;
+  lastResult =
+    "💸 5 Years: " + currency + Math.round(future5) +
+    "\n🚀 10 Years: " + currency + Math.round(future10) +
+    "\n🤑 Millionaire Age: " + millionaireAge;
+
+  document.getElementById("result").innerText = lastResult;
+}
+
+function copyResult() {
+  navigator.clipboard.writeText(lastResult);
+  alert("Result Copied 📋");
+}
+
+function shareResult() {
+  if (navigator.share) {
+    navigator.share({
+      title: "My Future Salary Result",
+      text: lastResult
+    });
+  } else {
+    alert("Share not supported on this device");
+  }
 }
 </script>
 
